@@ -4,7 +4,7 @@ import { ContactForm } from "@/components/contact-form";
 import { CookieBanner } from "@/components/cookie-banner";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { siteContent } from "@/lib/content";
-import { defaultLocale, isLocale, locales, type Locale } from "@/lib/i18n";
+import { isLocale, locales, type Locale } from "@/lib/i18n";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -170,7 +170,7 @@ export default async function LocaleHome({
             <Link href={`/${locale}/privacy`} className="transition hover:text-cyan-200">
               {content.footer.privacy}
             </Link>
-            <a href={`/${defaultLocale}`} className="transition hover:text-cyan-200">
+            <a href={`/${locale}`} className="transition hover:text-cyan-200">
               {content.footer.home}
             </a>
           </div>

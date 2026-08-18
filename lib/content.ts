@@ -262,7 +262,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     footer: {
       copy: "© Hiristic. AI-automation med fokus på EU-hosting, dataskydd och mätbart affärsvärde.",
-      home: "Svensk startsida",
+      home: "Startsida",
       privacy: "Integritet",
     },
   },
@@ -441,7 +441,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     footer: {
       copy: "© Hiristic. AI automation focused on EU hosting, data protection, and measurable business value.",
-      home: "Swedish homepage",
+      home: "Homepage",
       privacy: "Privacy",
     },
   },

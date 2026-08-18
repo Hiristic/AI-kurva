@@ -30,12 +30,13 @@ export function CookieBanner({
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
 
   useEffect(() => {
-    const storedConsent = deserializeConsent(localStorage.getItem(CONSENT_STORAGE_KEY));
-    setIsOpen(shouldShowCookieBanner(storedConsent));
+    const frame = window.requestAnimationFrame(() => {
+      const storedConsent = deserializeConsent(localStorage.getItem(CONSENT_STORAGE_KEY));
+      setAnalyticsEnabled(storedConsent?.analytics ?? false);
+      setIsOpen(shouldShowCookieBanner(storedConsent));
+    });
 
-    if (storedConsent) {
-      setAnalyticsEnabled(storedConsent.analytics);
-    }
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   const customConsent = useMemo<CookieConsent>(

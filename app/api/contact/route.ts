@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       headers: {
         "content-type": "application/json",
         ...(process.env.CONTACT_API_BEARER_TOKEN
-          ? { authorization: `****** }
+          ? { authorization: "Bearer " + process.env.CONTACT_API_BEARER_TOKEN }
           : {}),
       },
       body: JSON.stringify({

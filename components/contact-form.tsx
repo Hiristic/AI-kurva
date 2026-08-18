@@ -28,8 +28,15 @@ export function ContactForm({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatusMessage("");
+    const formData = new FormData(event.currentTarget);
 
-    const result = validateContactForm(data);
+    const result = validateContactForm({
+      company: formData.get("company"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+      name: formData.get("name"),
+      website: formData.get("website"),
+    });
 
     if (!result.success) {
       setErrors(result.errors);
