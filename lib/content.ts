@@ -36,6 +36,7 @@ type SiteContent = {
     security: string;
     services: string;
     tagline: string;
+    training: string;
   };
   hero: {
     badge: string;
@@ -62,6 +63,12 @@ type SiteContent = {
     description: string;
     eyebrow: string;
     steps: Array<{ title: string; description: string }>;
+    title: string;
+  };
+  training: {
+    description: string;
+    eyebrow: string;
+    items: Array<{ title: string; description: string }>;
     title: string;
   };
   contact: {
@@ -93,18 +100,19 @@ export const siteContent: Record<Locale, SiteContent> = {
       process: "Arbetsprocess",
       security: "Säkerhet & compliance",
       services: "Tjänster",
-      tagline: "AI-automation med EU-hostad leverans",
+      tagline: "AI-automation för verksamhetskritiska flöden",
+      training: "AI-utbildningar",
     },
     hero: {
-      badge: "GDPR-först • EU-hosting • Produktion inom veckor",
+      badge: "GDPR-anpassad • Produktion inom veckor",
       cardEyebrow: "Vad ni får",
       description:
-        "Hiristic hjälper företag att automatisera verksamhetskritiska flöden med AI, orkestrering och integrationsplattformar som utvecklas och driftas inom EU.",
+        "Hiristic hjälper företag att automatisera verksamhetskritiska flöden med AI, orkestrering och integrationsplattformar.",
       highlights: [
         {
-          title: "EU-baserad verktygsstack",
+          title: "Anpassad verktygsstack",
           description:
-            "Vi designar lösningar med modeller, databaser och automationsverktyg som kan driftas inom EU för att minimera juridisk och operativ risk.",
+            "Vi designar lösningar med modeller, databaser och automationsverktyg som passar er verksamhet och era dataskyddskrav.",
         },
         {
           title: "Snabb väg till värde",
@@ -119,7 +127,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       ],
       primaryCta: "Boka ett möte",
       secondaryCta: "Läs om integritet",
-      title: "Automatisera kärnprocesser med AI utan att exportera data utanför EU.",
+      title: "Automatisera kärnprocesser med AI – med full kontroll över er data.",
     },
     services: {
       description:
@@ -194,6 +202,29 @@ export const siteContent: Record<Locale, SiteContent> = {
         },
       ],
       title: "Ett leveransupplägg som passar reglerad verksamhet",
+    },
+    training: {
+      description:
+        "Vi erbjuder praktiska utbildningar som ger era team förståelse för AI-verktyg, automatisering och ansvarsfull AI-användning i vardagen.",
+      eyebrow: "AI-utbildningar",
+      items: [
+        {
+          title: "Introduktion till AI för verksamheten",
+          description:
+            "En halvdagsworkshop för ledning och kärnteam som ger en gemensam bild av vad AI kan och inte kan göra – och hur ni börjar prioritera rätt.",
+        },
+        {
+          title: "Praktisk AI i arbetsflöden",
+          description:
+            "Handsontillfälle där deltagarna lär sig använda AI-verktyg direkt i sina egna arbetsuppgifter med fokus på effektivitet och kvalitet.",
+        },
+        {
+          title: "Ansvarsfull AI & dataskydd",
+          description:
+            "Fördjupning i GDPR, bias, transparens och intern styrning – för team som arbetar nära AI-system och behöver förstå riskerna.",
+        },
+      ],
+      title: "Bygg intern AI-kompetens",
     },
     contact: {
       complianceDescription:
@@ -272,18 +303,19 @@ export const siteContent: Record<Locale, SiteContent> = {
       process: "Process",
       security: "Security & compliance",
       services: "Services",
-      tagline: "AI automation delivered with EU hosting",
+      tagline: "AI automation for business-critical workflows",
+      training: "AI training",
     },
     hero: {
-      badge: "GDPR-first • EU hosting • Production-ready delivery",
+      badge: "GDPR-aligned • Production-ready delivery",
       cardEyebrow: "What you get",
       description:
-        "Hiristic helps companies automate business-critical workflows with AI, orchestration, and integration tooling developed and operated within the EU.",
+        "Hiristic helps companies automate business-critical workflows with AI, orchestration, and integration tooling.",
       highlights: [
         {
-          title: "EU-based tooling stack",
+          title: "Tailored tooling stack",
           description:
-            "We design solutions with models, databases, and automation tooling that can run in the EU to reduce legal and operational risk.",
+            "We design solutions with models, databases, and automation tooling that fit your operations and data protection requirements.",
         },
         {
           title: "Fast path to value",
@@ -298,7 +330,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       ],
       primaryCta: "Book a call",
       secondaryCta: "Read our privacy policy",
-      title: "Automate core processes with AI without exporting data outside the EU.",
+      title: "Automate core processes with AI — with full control over your data.",
     },
     services: {
       description:
@@ -373,6 +405,29 @@ export const siteContent: Record<Locale, SiteContent> = {
         },
       ],
       title: "A delivery model suited for regulated operations",
+    },
+    training: {
+      description:
+        "We offer practical training sessions that give your teams a solid understanding of AI tools, automation, and responsible AI use in everyday work.",
+      eyebrow: "AI training",
+      items: [
+        {
+          title: "Introduction to AI for your organisation",
+          description:
+            "A half-day workshop for leadership and core teams that builds a shared picture of what AI can and cannot do — and how to start prioritising the right areas.",
+        },
+        {
+          title: "Practical AI in workflows",
+          description:
+            "Hands-on session where participants learn to use AI tools directly in their own tasks with a focus on efficiency and quality.",
+        },
+        {
+          title: "Responsible AI & data protection",
+          description:
+            "Deep dive into GDPR, bias, transparency, and internal governance — for teams working closely with AI systems who need to understand the risks.",
+        },
+      ],
+      title: "Build internal AI capability",
     },
     contact: {
       complianceDescription:
