@@ -75,4 +75,30 @@ jobs:
         run: vercel alias set ${{ steps.deploy.outputs.url }} "$PROD_ALIAS_DOMAIN" --token="$VERCEL_TOKEN"
 
       - name: Verify deployment health
-        run: curl --fail --silent --show-error --location --max-time 20 "${{ steps.deploy.outputs.url }}"
+        env:
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          if [ -z "$DEPLOY_URL" ]; then
+            echo "Missing deployment URL output."
+            exit 1
+          fi
+          max_attempts=6
+          for ((attempt=1; attempt<=max_attempts; attempt++)); do
+            status_code=$(curl --show-error --location --max-time 20 \
+              --output /tmp/prod-health-response.txt --write-out "%{http_code}" "$DEPLOY_URL")
+            curl_exit=$?
+            status_code=${status_code:-000}
+            if [ "$curl_exit" -eq 0 ] && [ "$status_code" -ge 200 ] && [ "$status_code" -lt 400 ]; then
+              exit 0
+            fi
+            if [ "$curl_exit" -ne 0 ]; then
+              echo "Health check attempt $attempt failed with curl exit code $curl_exit"
+            else
+              echo "Health check attempt $attempt failed with HTTP status $status_code"
+            fi
+            cat /tmp/prod-health-response.txt || true
+            if [ "$attempt" -lt "$max_attempts" ]; then
+              sleep 10
+            fi
+          done
+          exit 1
