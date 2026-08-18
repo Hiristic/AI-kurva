@@ -53,8 +53,11 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Alias dev domain
-        if: ${{ secrets.DEV_ALIAS_DOMAIN != '' }}
-        run: vercel alias set ${{ steps.deploy.outputs.url }} ${{ secrets.DEV_ALIAS_DOMAIN }} --token=${{ secrets.VERCEL_TOKEN }}
+        if: ${{ env.DEV_ALIAS_DOMAIN != '' }}
+        env:
+          DEV_ALIAS_DOMAIN: ${{ secrets.DEV_ALIAS_DOMAIN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel alias set ${{ steps.deploy.outputs.url }} "$DEV_ALIAS_DOMAIN" --token="$VERCEL_TOKEN"
 
       - name: Save deployment metadata
         run: |
