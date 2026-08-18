@@ -1,17 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { validateContactForm, type ContactFormData, type ContactFormErrors } from "@/lib/contact";
+import {
+  contactValidationMessages,
+  validateContactForm,
+  type ContactFormErrors,
+} from "@/lib/contact";
 import type { ContactFormContent } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
-
-const initialData: ContactFormData = {
-  company: "",
-  email: "",
-  message: "",
-  name: "",
-  website: "",
-};
 
 export function ContactForm({
   locale,
@@ -20,7 +16,6 @@ export function ContactForm({
   locale: Locale;
   labels: ContactFormContent;
 }) {
-  const [data, setData] = useState(initialData);
   const [errors, setErrors] = useState<ContactFormErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
@@ -28,7 +23,8 @@ export function ContactForm({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatusMessage("");
-    const formData = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const formData = new FormData(formElement);
 
     const result = validateContactForm({
       company: formData.get("company"),
@@ -36,7 +32,7 @@ export function ContactForm({
       message: formData.get("message"),
       name: formData.get("name"),
       website: formData.get("website"),
-    });
+    }, contactValidationMessages[locale]);
 
     if (!result.success) {
       setErrors(result.errors);
@@ -64,7 +60,7 @@ export function ContactForm({
         throw new Error(responseBody?.message ?? labels.error);
       }
 
-      setData(initialData);
+      formElement.reset();
       setStatus("success");
       setStatusMessage(labels.success);
     } catch (error) {
@@ -79,8 +75,6 @@ export function ContactForm({
         <label className="space-y-2 text-sm text-slate-200">
           <span>{labels.name}</span>
           <input
-            value={data.name}
-            onChange={(event) => setData((current) => ({ ...current, name: event.target.value }))}
             className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-300"
             name="name"
             autoComplete="name"
@@ -90,8 +84,6 @@ export function ContactForm({
         <label className="space-y-2 text-sm text-slate-200">
           <span>{labels.company}</span>
           <input
-            value={data.company}
-            onChange={(event) => setData((current) => ({ ...current, company: event.target.value }))}
             className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-300"
             name="company"
             autoComplete="organization"
@@ -101,8 +93,6 @@ export function ContactForm({
         <label className="space-y-2 text-sm text-slate-200 sm:col-span-2">
           <span>{labels.email}</span>
           <input
-            value={data.email}
-            onChange={(event) => setData((current) => ({ ...current, email: event.target.value }))}
             className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-300"
             name="email"
             autoComplete="email"
@@ -113,8 +103,6 @@ export function ContactForm({
         <label className="hidden">
           <span>{labels.website}</span>
           <input
-            value={data.website}
-            onChange={(event) => setData((current) => ({ ...current, website: event.target.value }))}
             name="website"
             tabIndex={-1}
             autoComplete="off"
@@ -123,8 +111,6 @@ export function ContactForm({
         <label className="space-y-2 text-sm text-slate-200 sm:col-span-2">
           <span>{labels.message}</span>
           <textarea
-            value={data.message}
-            onChange={(event) => setData((current) => ({ ...current, message: event.target.value }))}
             className="min-h-40 w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-300"
             name="message"
           />

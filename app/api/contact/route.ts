@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
-import { validateContactForm } from "@/lib/contact";
+import { contactValidationMessages, validateContactForm } from "@/lib/contact";
+import { isLocale } from "@/lib/i18n";
 
 const DEFAULT_TIMEOUT_MS = 10000;
 
 export async function POST(request: Request) {
   const payload = await request.json().catch(() => null);
-  const validation = validateContactForm(payload);
+  const requestLocale = request.headers.get("x-locale");
+  const locale = requestLocale && isLocale(requestLocale) ? requestLocale : "en";
+  const validation = validateContactForm(payload, contactValidationMessages[locale]);
 
   if (!validation.success) {
     return NextResponse.json(

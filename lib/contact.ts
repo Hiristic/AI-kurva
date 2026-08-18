@@ -10,7 +10,35 @@ export type ContactFormErrors = Partial<Record<keyof ContactFormData, string>>;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function validateContactForm(input: unknown):
+type ValidationMessages = {
+  companyTooLong: string;
+  emailInvalid: string;
+  messageTooShort: string;
+  nameRequired: string;
+  websiteFilled: string;
+};
+
+export const contactValidationMessages = {
+  en: {
+    companyTooLong: "Company name is too long.",
+    emailInvalid: "Please enter a valid email address.",
+    messageTooShort: "Please describe your needs in at least 20 characters.",
+    nameRequired: "Please enter your name.",
+    websiteFilled: "Spam protection triggered.",
+  },
+  sv: {
+    companyTooLong: "Företagsnamnet är för långt.",
+    emailInvalid: "Ange en giltig e-postadress.",
+    messageTooShort: "Beskriv ert behov med minst 20 tecken.",
+    nameRequired: "Ange ditt namn.",
+    websiteFilled: "Spam-skyddet utlöstes.",
+  },
+} satisfies Record<string, ValidationMessages>;
+
+export function validateContactForm(
+  input: unknown,
+  messages: ValidationMessages = contactValidationMessages.en,
+):
   | { success: true; data: ContactFormData }
   | { success: false; errors: ContactFormErrors } {
   const candidate = (input ?? {}) as Partial<Record<keyof ContactFormData, unknown>>;
@@ -26,23 +54,23 @@ export function validateContactForm(input: unknown):
   const errors: ContactFormErrors = {};
 
   if (data.name.length < 2) {
-    errors.name = "Please enter your name.";
+    errors.name = messages.nameRequired;
   }
 
   if (!emailPattern.test(data.email)) {
-    errors.email = "Please enter a valid email address.";
+    errors.email = messages.emailInvalid;
   }
 
   if (data.message.length < 20) {
-    errors.message = "Please describe your needs in at least 20 characters.";
+    errors.message = messages.messageTooShort;
   }
 
   if (data.company.length > 120) {
-    errors.company = "Company name is too long.";
+    errors.company = messages.companyTooLong;
   }
 
   if (data.website.length > 0) {
-    errors.website = "Spam protection triggered.";
+    errors.website = messages.websiteFilled;
   }
 
   if (Object.keys(errors).length > 0) {

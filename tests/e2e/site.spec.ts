@@ -32,13 +32,16 @@ test("homepage loads, switches language, stores cookie consent, and submits cont
     }),
   ).toBeVisible();
 
-  await page.getByLabel("Name").fill("Alex Example");
-  await page.getByLabel("Company").fill("Hiristic");
-  await page.getByLabel("Email").fill("alex@example.com");
+  await page.locator('input[name="name"]').fill("Alex Example");
+  await page.locator('input[name="company"]').fill("Hiristic");
+  await page.locator('input[name="email"]').fill("alex@example.com");
   await page
-    .getByLabel("What would you like to automate?")
+    .locator('textarea[name="message"]')
     .fill("We want to automate invoice processing and internal support workflows.");
-  await page.getByRole("button", { name: "Send request" }).click();
+  await Promise.all([
+    page.waitForResponse("**/api/contact"),
+    page.getByRole("button", { name: "Send request" }).click(),
+  ]);
 
   await expect(page.getByText("Thank you! We will get back to you shortly.")).toBeVisible();
 });

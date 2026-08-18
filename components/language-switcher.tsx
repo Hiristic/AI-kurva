@@ -1,5 +1,4 @@
-import { locales, localeLabels, type Locale } from "@/lib/i18n";
-import { switchLocalePathname } from "@/lib/i18n";
+import { localeLabels, locales, switchLocalePathname, type Locale } from "@/lib/i18n";
 
 type LanguageSwitcherProps = {
   currentLocale: Locale;
