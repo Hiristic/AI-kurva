@@ -4,20 +4,25 @@ on:
   workflow_run:
     workflows: ["CI"]
     types: [completed]
+  workflow_dispatch:
 
 jobs:
   deploy-dev:
     if: >-
-      ${{ github.event.workflow_run.conclusion == 'success' &&
-          github.event.workflow_run.head_branch == 'develop' }}
+      ${{ (github.event_name == 'workflow_dispatch' && github.ref_name == 'develop') ||
+          (github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.head_branch == 'develop') }}
     runs-on: ubuntu-latest
+    environment: dev
+    env:
+      DEV_ALIAS_DOMAIN: ${{ secrets.DEV_ALIAS_DOMAIN }}
     permissions:
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,6 +35,23 @@ jobs:
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+
+      - name: Validate required deployment secrets
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          missing=()
+          for key in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!key}" ]; then
+              missing+=("$key")
+            fi
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "Missing required secrets: ${missing[*]}"
+            exit 1
+          fi
 
       - name: Pull Vercel environment
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
@@ -55,9 +77,37 @@ jobs:
       - name: Alias dev domain
         if: ${{ env.DEV_ALIAS_DOMAIN != '' }}
         env:
-          DEV_ALIAS_DOMAIN: ${{ secrets.DEV_ALIAS_DOMAIN }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel alias set ${{ steps.deploy.outputs.url }} "$DEV_ALIAS_DOMAIN" --token="$VERCEL_TOKEN"
+
+      - name: Verify deployment health
+        env:
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          if [ -z "$DEPLOY_URL" ]; then
+            echo "Missing deployment URL output."
+            exit 1
+          fi
+          max_attempts=6
+          for ((attempt=1; attempt<=max_attempts; attempt++)); do
+            status_code=$(curl --show-error --location --max-time 20 \
+              --output /tmp/dev-health-response.txt --write-out "%{http_code}" "$DEPLOY_URL")
+            curl_exit=$?
+            status_code=${status_code:-000}
+            if [ "$curl_exit" -eq 0 ] && [ "$status_code" -ge 200 ] && [ "$status_code" -lt 400 ]; then
+              exit 0
+            fi
+            if [ "$curl_exit" -ne 0 ]; then
+              echo "Health check attempt $attempt failed with curl exit code $curl_exit"
+            else
+              echo "Health check attempt $attempt failed with HTTP status $status_code"
+            fi
+            cat /tmp/dev-health-response.txt || true
+            if [ "$attempt" -lt "$max_attempts" ]; then
+              sleep 10
+            fi
+          done
+          exit 1
 
       - name: Save deployment metadata
         run: |

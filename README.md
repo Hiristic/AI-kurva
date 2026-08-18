@@ -48,9 +48,9 @@ The root route redirects to `/sv`. English is available under `/en`.
 
 ### Deployment / CI
 
-- `VERCEL_TOKEN`
-- `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID`
+- `VERCEL_TOKEN` (required)
+- `VERCEL_ORG_ID` (required)
+- `VERCEL_PROJECT_ID` (required)
 - `DEV_ALIAS_DOMAIN` (optional but recommended)
 - `STAGING_ALIAS_DOMAIN` (optional but recommended)
 - `PROD_ALIAS_DOMAIN` (optional but recommended)
@@ -139,12 +139,31 @@ Playwright E2E covers:
 6. **Deploy Production** (`.github/workflows/deploy-prod.yml`)
    - Runs on pushes/merges to `main`
    - Builds and deploys production and can alias it to `PROD_ALIAS_DOMAIN`
+   - Can also be started manually with `workflow_dispatch`
 
 ## Environment usage
 
 - **Dev**: automatic verification environment sourced from `develop`
 - **Staging**: review and acceptance environment sourced from `staging`
 - **Production**: live environment sourced from `main`
+
+## Deployment runbook
+
+1. Configure GitHub environments: `dev`, `staging`, `production`.
+2. Add required repository or environment secrets:
+   - `VERCEL_TOKEN`
+   - `VERCEL_ORG_ID`
+   - `VERCEL_PROJECT_ID`
+3. Add optional alias secrets:
+   - `DEV_ALIAS_DOMAIN`
+   - `STAGING_ALIAS_DOMAIN`
+   - `PROD_ALIAS_DOMAIN`
+4. Merge feature branches into `develop` to trigger CI → dev deploy → dev E2E.
+5. Promote `develop` to `staging` via PR (auto-created by workflow) and merge to deploy staging.
+6. Promote `staging` to `main` via PR and merge to deploy production.
+7. Use manual workflow dispatch on deploy workflows when you need to redeploy specific instances without new commits.
+
+Each deploy workflow validates required secrets before build and performs a deployment health check after deploy.
 
 Recommended Vercel mapping:
 - Use preview deployments for `develop` and `staging`
