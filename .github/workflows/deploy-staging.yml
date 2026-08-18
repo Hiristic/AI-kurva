@@ -10,6 +10,8 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     environment: staging
+    env:
+      STAGING_ALIAS_DOMAIN: ${{ secrets.STAGING_ALIAS_DOMAIN }}
     permissions:
       contents: read
     steps:
@@ -67,9 +69,8 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Alias staging domain
-        if: ${{ secrets.STAGING_ALIAS_DOMAIN != '' }}
+        if: ${{ env.STAGING_ALIAS_DOMAIN != '' }}
         env:
-          STAGING_ALIAS_DOMAIN: ${{ secrets.STAGING_ALIAS_DOMAIN }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel alias set ${{ steps.deploy.outputs.url }} "$STAGING_ALIAS_DOMAIN" --token="$VERCEL_TOKEN"
 

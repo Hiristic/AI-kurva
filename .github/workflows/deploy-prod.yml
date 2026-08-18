@@ -10,6 +10,8 @@ jobs:
   deploy-production:
     runs-on: ubuntu-latest
     environment: production
+    env:
+      PROD_ALIAS_DOMAIN: ${{ secrets.PROD_ALIAS_DOMAIN }}
     permissions:
       contents: read
     steps:
@@ -67,9 +69,8 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Alias production domain
-        if: ${{ secrets.PROD_ALIAS_DOMAIN != '' }}
+        if: ${{ env.PROD_ALIAS_DOMAIN != '' }}
         env:
-          PROD_ALIAS_DOMAIN: ${{ secrets.PROD_ALIAS_DOMAIN }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel alias set ${{ steps.deploy.outputs.url }} "$PROD_ALIAS_DOMAIN" --token="$VERCEL_TOKEN"
 
