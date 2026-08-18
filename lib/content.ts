@@ -216,7 +216,7 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           title: "Praktisk AI i arbetsflöden",
           description:
-            "Handsontillfälle där deltagarna lär sig använda AI-verktyg direkt i sina egna arbetsuppgifter med fokus på effektivitet och kvalitet.",
+            "Hands-on-tillfälle där deltagarna lär sig använda AI-verktyg direkt i sina egna arbetsuppgifter med fokus på effektivitet och kvalitet.",
         },
         {
           title: "Ansvarsfull AI & dataskydd",
