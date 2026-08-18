@@ -36,6 +36,7 @@ export default async function LocaleHome({
               <a href="#services">{content.header.services}</a>
               <a href="#security">{content.header.security}</a>
               <a href="#process">{content.header.process}</a>
+              <a href="#training">{content.header.training}</a>
               <a href="#contact">{content.header.contact}</a>
             </nav>
             <LanguageSwitcher currentLocale={locale as Locale} currentPath={`/${locale}`} />
@@ -143,6 +144,26 @@ export default async function LocaleHome({
               </li>
             ))}
           </ol>
+        </section>
+
+        <section id="training" className="border-y border-white/10 bg-slate-900/70">
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+            <div className="max-w-2xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
+                {content.training.eyebrow}
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold text-white">{content.training.title}</h2>
+              <p className="mt-4 text-lg text-slate-300">{content.training.description}</p>
+            </div>
+            <div className="mt-10 grid gap-6 md:grid-cols-3">
+              {content.training.items.map((item) => (
+                <article key={item.title} className="rounded-3xl border border-white/10 bg-white/5 p-6">
+                  <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                  <p className="mt-4 text-sm leading-7 text-slate-300">{item.description}</p>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section id="contact" className="border-t border-white/10 bg-gradient-to-b from-slate-950 to-slate-900">
