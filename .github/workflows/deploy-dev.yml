@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows: ["CI"]
     types: [completed]
+  workflow_dispatch:
 
 jobs:
   deploy-dev:
@@ -11,6 +12,7 @@ jobs:
       ${{ github.event.workflow_run.conclusion == 'success' &&
           github.event.workflow_run.head_branch == 'develop' }}
     runs-on: ubuntu-latest
+    environment: dev
     permissions:
       contents: read
     steps:
@@ -30,6 +32,23 @@ jobs:
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+
+      - name: Validate required deployment secrets
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          missing=()
+          for key in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!key}" ]; then
+              missing+=("$key")
+            fi
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "Missing required secrets: ${missing[*]}"
+            exit 1
+          fi
 
       - name: Pull Vercel environment
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
@@ -53,11 +72,14 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Alias dev domain
-        if: ${{ env.DEV_ALIAS_DOMAIN != '' }}
+        if: ${{ secrets.DEV_ALIAS_DOMAIN != '' }}
         env:
           DEV_ALIAS_DOMAIN: ${{ secrets.DEV_ALIAS_DOMAIN }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel alias set ${{ steps.deploy.outputs.url }} "$DEV_ALIAS_DOMAIN" --token="$VERCEL_TOKEN"
+
+      - name: Verify deployment health
+        run: curl --fail --silent --show-error --location --max-time 20 "${{ steps.deploy.outputs.url }}"
 
       - name: Save deployment metadata
         run: |
