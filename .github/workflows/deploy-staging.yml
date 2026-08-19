@@ -102,3 +102,11 @@ jobs:
             fi
           done
           exit 1
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke test deployed staging site
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ steps.deploy.outputs.url }}
+        run: npm run test:e2e

@@ -16,7 +16,7 @@ test("homepage loads, switches language, stores cookie consent, and submits cont
   await expect(page).toHaveURL(/\/sv$/);
   await expect(
     page.getByRole("heading", {
-      name: "Automatisera kärnprocesser med AI utan att exportera data utanför EU.",
+      name: "Automatisera kärnprocesser med AI – med full kontroll över er data.",
     }),
   ).toBeVisible();
 
@@ -28,7 +28,7 @@ test("homepage loads, switches language, stores cookie consent, and submits cont
   await expect(page).toHaveURL(/\/en$/);
   await expect(
     page.getByRole("heading", {
-      name: "Automate core processes with AI without exporting data outside the EU.",
+      name: "Automate core processes with AI — with full control over your data.",
     }),
   ).toBeVisible();
 
