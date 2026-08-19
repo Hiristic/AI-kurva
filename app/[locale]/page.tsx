@@ -27,11 +27,12 @@ export default async function LocaleHome({
     <div className="relative min-h-screen overflow-x-clip bg-slate-950 text-slate-50">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-36 mx-auto h-96 w-[64rem] rounded-full bg-cyan-400/20 blur-3xl"
+        className="animate-drift pointer-events-none absolute inset-x-0 -top-36 mx-auto h-96 w-[64rem] rounded-full bg-cyan-400/20 blur-3xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute right-0 top-[32rem] h-80 w-80 rounded-full bg-violet-500/15 blur-3xl"
+        className="animate-drift pointer-events-none absolute right-0 top-[32rem] h-80 w-80 rounded-full bg-violet-500/15 blur-3xl"
+        style={{ animationDelay: "200ms" }}
       />
 
       <header className="sticky top-0 z-30 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
@@ -65,7 +66,7 @@ export default async function LocaleHome({
 
       <main className="relative z-10">
         <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-28">
-          <div className="space-y-8">
+          <div className="animate-fade-up space-y-8">
             <span className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-sm text-cyan-100">
               {content.hero.badge}
             </span>
@@ -91,15 +92,16 @@ export default async function LocaleHome({
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-8 shadow-2xl shadow-cyan-950/30">
+          <div className="animate-fade-up rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-8 shadow-2xl shadow-cyan-950/30" style={{ animationDelay: "120ms" }}>
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-100">
               {content.hero.cardEyebrow}
             </p>
             <ul className="mt-6 space-y-5 text-sm text-slate-200">
-              {content.hero.highlights.map((highlight) => (
+              {content.hero.highlights.map((highlight, index) => (
                 <li
                   key={highlight.title}
-                  className="rounded-2xl border border-white/10 bg-slate-900/70 p-4 transition duration-200 hover:border-cyan-300/40 hover:bg-slate-900/90"
+                  className="motion-card rounded-2xl border border-white/10 bg-slate-900/70 p-4 hover:border-cyan-300/40 hover:bg-slate-900/90"
+                  style={{ animationDelay: `${index * 90}ms` }}
                 >
                   <p className="font-semibold text-white">{highlight.title}</p>
                   <p className="mt-2 leading-6 text-slate-300">{highlight.description}</p>
@@ -110,7 +112,7 @@ export default async function LocaleHome({
         </section>
 
         <section id="services" className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl animate-fade-up">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
               {content.services.eyebrow}
             </p>
@@ -118,10 +120,11 @@ export default async function LocaleHome({
             <p className="mt-4 text-lg text-slate-300">{content.services.description}</p>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {content.services.items.map((service) => (
+            {content.services.items.map((service, index) => (
               <article
                 key={service.title}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-slate-950/50 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10"
+                className="motion-card animate-fade-up rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-slate-950/50 hover:border-cyan-300/30 hover:bg-white/10"
+                style={{ animationDelay: `${index * 120}ms` }}
               >
                 <h3 className="text-xl font-semibold text-white">{service.title}</h3>
                 <p className="mt-4 text-sm leading-7 text-slate-300">{service.description}</p>
@@ -132,7 +135,7 @@ export default async function LocaleHome({
 
         <section id="security" className="border-y border-white/10 bg-slate-900/60">
           <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-            <div>
+            <div className="animate-fade-up">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
                 {content.security.eyebrow}
               </p>
@@ -140,10 +143,11 @@ export default async function LocaleHome({
               <p className="mt-4 text-lg leading-8 text-slate-300">{content.security.description}</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              {content.security.points.map((point) => (
+              {content.security.points.map((point, index) => (
                 <div
                   key={point.title}
-                  className="rounded-3xl border border-cyan-300/20 bg-cyan-300/5 p-5 transition duration-200 hover:border-cyan-300/35 hover:bg-cyan-300/10"
+                  className="motion-card animate-fade-up rounded-3xl border border-cyan-300/20 bg-cyan-300/5 p-5 hover:border-cyan-300/35 hover:bg-cyan-300/10"
+                  style={{ animationDelay: `${index * 120}ms` }}
                 >
                   <p className="text-base font-semibold text-white">{point.title}</p>
                   <p className="mt-3 text-sm leading-6 text-slate-300">{point.description}</p>
@@ -154,7 +158,7 @@ export default async function LocaleHome({
         </section>
 
         <section id="process" className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl animate-fade-up">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
               {content.process.eyebrow}
             </p>
@@ -165,7 +169,8 @@ export default async function LocaleHome({
             {content.process.steps.map((step, index) => (
               <li
                 key={step.title}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30"
+                className="motion-card animate-fade-up rounded-3xl border border-white/10 bg-white/5 p-6 hover:border-cyan-300/30"
+                style={{ animationDelay: `${index * 130}ms` }}
               >
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-cyan-300 text-sm font-semibold text-slate-950">
                   {index + 1}
@@ -179,7 +184,7 @@ export default async function LocaleHome({
 
         <section id="training" className="border-y border-white/10 bg-slate-900/60">
           <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl animate-fade-up">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
                 {content.training.eyebrow}
               </p>
@@ -187,10 +192,11 @@ export default async function LocaleHome({
               <p className="mt-4 text-lg text-slate-300">{content.training.description}</p>
             </div>
             <div className="mt-10 grid gap-6 md:grid-cols-3">
-              {content.training.items.map((item) => (
+              {content.training.items.map((item, index) => (
                 <article
                   key={item.title}
-                  className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-slate-950/40 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30"
+                  className="motion-card animate-fade-up rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-slate-950/40 hover:border-cyan-300/30"
+                  style={{ animationDelay: `${index * 120}ms` }}
                 >
                   <h3 className="text-xl font-semibold text-white">{item.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-slate-300">{item.description}</p>
@@ -202,18 +208,20 @@ export default async function LocaleHome({
 
         <section id="contact" className="border-t border-white/10 bg-gradient-to-b from-slate-950 to-slate-900">
           <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
-            <div className="space-y-4">
+            <div className="animate-fade-up space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
                 {content.contact.eyebrow}
               </p>
               <h2 className="text-3xl font-semibold text-white">{content.contact.title}</h2>
               <p className="text-lg leading-8 text-slate-300">{content.contact.description}</p>
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-300 shadow-lg shadow-slate-950/40">
+              <div className="motion-card rounded-3xl border border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-300 shadow-lg shadow-slate-950/40 hover:border-cyan-300/30">
                 <p className="font-semibold text-white">{content.contact.complianceTitle}</p>
                 <p className="mt-3">{content.contact.complianceDescription}</p>
               </div>
             </div>
-            <ContactForm locale={locale as Locale} labels={content.contact.form} />
+            <div className="animate-fade-up" style={{ animationDelay: "120ms" }}>
+              <ContactForm locale={locale as Locale} labels={content.contact.form} />
+            </div>
           </div>
         </section>
       </main>
