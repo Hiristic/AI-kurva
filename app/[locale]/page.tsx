@@ -24,30 +24,49 @@ export default async function LocaleHome({
   const content = siteContent[locale as Locale];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
-      <header className="border-b border-white/10 bg-slate-950/90 backdrop-blur">
+    <div className="relative min-h-screen overflow-x-clip bg-slate-950 text-slate-50">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 -top-36 mx-auto h-96 w-[64rem] rounded-full bg-cyan-400/20 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-0 top-[32rem] h-80 w-80 rounded-full bg-violet-500/15 blur-3xl"
+      />
+
+      <header className="sticky top-0 z-30 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
-          <div>
-            <p className="text-lg font-semibold tracking-wide text-cyan-300">Hiristic</p>
+          <div className="space-y-1">
+            <p className="text-lg font-semibold tracking-wide text-cyan-200">Hiristic</p>
             <p className="text-sm text-slate-300">{content.header.tagline}</p>
           </div>
           <div className="flex items-center gap-4">
             <nav className="hidden gap-6 text-sm text-slate-200 md:flex">
-              <a href="#services">{content.header.services}</a>
-              <a href="#security">{content.header.security}</a>
-              <a href="#process">{content.header.process}</a>
-              <a href="#training">{content.header.training}</a>
-              <a href="#contact">{content.header.contact}</a>
+              <a className="transition hover:text-cyan-200" href="#services">
+                {content.header.services}
+              </a>
+              <a className="transition hover:text-cyan-200" href="#security">
+                {content.header.security}
+              </a>
+              <a className="transition hover:text-cyan-200" href="#process">
+                {content.header.process}
+              </a>
+              <a className="transition hover:text-cyan-200" href="#training">
+                {content.header.training}
+              </a>
+              <a className="transition hover:text-cyan-200" href="#contact">
+                {content.header.contact}
+              </a>
             </nav>
             <LanguageSwitcher currentLocale={locale as Locale} currentPath={`/${locale}`} />
           </div>
         </div>
       </header>
 
-      <main>
-        <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[1.2fr_0.8fr] lg:px-8 lg:py-28">
+      <main className="relative z-10">
+        <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-28">
           <div className="space-y-8">
-            <span className="inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-200">
+            <span className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-sm text-cyan-100">
               {content.hero.badge}
             </span>
             <div className="space-y-6">
@@ -59,26 +78,29 @@ export default async function LocaleHome({
             <div className="flex flex-col gap-4 sm:flex-row">
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-3 font-medium text-slate-950 transition hover:bg-cyan-300"
+                className="inline-flex items-center justify-center rounded-full bg-cyan-300 px-6 py-3 font-medium text-slate-950 shadow-lg shadow-cyan-900/40 transition duration-200 hover:-translate-y-0.5 hover:bg-cyan-200"
               >
                 {content.hero.primaryCta}
               </a>
               <Link
                 href={`/${locale}/privacy`}
-                className="inline-flex items-center justify-center rounded-full border border-white/15 px-6 py-3 font-medium text-white transition hover:border-cyan-300 hover:text-cyan-200"
+                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 font-medium text-white transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300 hover:text-cyan-200"
               >
                 {content.hero.secondaryCta}
               </Link>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl shadow-cyan-950/20">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-8 shadow-2xl shadow-cyan-950/30">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-100">
               {content.hero.cardEyebrow}
             </p>
             <ul className="mt-6 space-y-5 text-sm text-slate-200">
               {content.hero.highlights.map((highlight) => (
-                <li key={highlight.title} className="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+                <li
+                  key={highlight.title}
+                  className="rounded-2xl border border-white/10 bg-slate-900/70 p-4 transition duration-200 hover:border-cyan-300/40 hover:bg-slate-900/90"
+                >
                   <p className="font-semibold text-white">{highlight.title}</p>
                   <p className="mt-2 leading-6 text-slate-300">{highlight.description}</p>
                 </li>
@@ -97,7 +119,10 @@ export default async function LocaleHome({
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {content.services.items.map((service) => (
-              <article key={service.title} className="rounded-3xl border border-white/10 bg-white/5 p-6">
+              <article
+                key={service.title}
+                className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-slate-950/50 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10"
+              >
                 <h3 className="text-xl font-semibold text-white">{service.title}</h3>
                 <p className="mt-4 text-sm leading-7 text-slate-300">{service.description}</p>
               </article>
@@ -105,7 +130,7 @@ export default async function LocaleHome({
           </div>
         </section>
 
-        <section id="security" className="border-y border-white/10 bg-slate-900/70">
+        <section id="security" className="border-y border-white/10 bg-slate-900/60">
           <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
@@ -116,7 +141,10 @@ export default async function LocaleHome({
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               {content.security.points.map((point) => (
-                <div key={point.title} className="rounded-3xl border border-cyan-400/20 bg-cyan-400/5 p-5">
+                <div
+                  key={point.title}
+                  className="rounded-3xl border border-cyan-300/20 bg-cyan-300/5 p-5 transition duration-200 hover:border-cyan-300/35 hover:bg-cyan-300/10"
+                >
                   <p className="text-base font-semibold text-white">{point.title}</p>
                   <p className="mt-3 text-sm leading-6 text-slate-300">{point.description}</p>
                 </div>
@@ -135,8 +163,11 @@ export default async function LocaleHome({
           </div>
           <ol className="mt-10 grid gap-6 md:grid-cols-3">
             {content.process.steps.map((step, index) => (
-              <li key={step.title} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-sm font-semibold text-slate-950">
+              <li
+                key={step.title}
+                className="rounded-3xl border border-white/10 bg-white/5 p-6 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30"
+              >
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-cyan-300 text-sm font-semibold text-slate-950">
                   {index + 1}
                 </span>
                 <h3 className="mt-5 text-xl font-semibold text-white">{step.title}</h3>
@@ -146,7 +177,7 @@ export default async function LocaleHome({
           </ol>
         </section>
 
-        <section id="training" className="border-y border-white/10 bg-slate-900/70">
+        <section id="training" className="border-y border-white/10 bg-slate-900/60">
           <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
@@ -157,7 +188,10 @@ export default async function LocaleHome({
             </div>
             <div className="mt-10 grid gap-6 md:grid-cols-3">
               {content.training.items.map((item) => (
-                <article key={item.title} className="rounded-3xl border border-white/10 bg-white/5 p-6">
+                <article
+                  key={item.title}
+                  className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-slate-950/40 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30"
+                >
                   <h3 className="text-xl font-semibold text-white">{item.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-slate-300">{item.description}</p>
                 </article>
@@ -174,7 +208,7 @@ export default async function LocaleHome({
               </p>
               <h2 className="text-3xl font-semibold text-white">{content.contact.title}</h2>
               <p className="text-lg leading-8 text-slate-300">{content.contact.description}</p>
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-300">
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm leading-7 text-slate-300 shadow-lg shadow-slate-950/40">
                 <p className="font-semibold text-white">{content.contact.complianceTitle}</p>
                 <p className="mt-3">{content.contact.complianceDescription}</p>
               </div>
